@@ -43,10 +43,12 @@ class TimedCompressionRotatingFileHandler(logging.handlers.TimedRotatingFileHand
         """
         r = super().computeRollover(currentTime)
 
+        # Calculate the last day of the current month
         current_date = datetime.now()
         next_month = current_date.replace(day=28) + timedelta(days=4)
         last_day = next_month - timedelta(days=next_month.day)
 
+        # Return the rollover time
         if current_date >= last_day:
             return r
         days_delta = (last_day - current_date).days
