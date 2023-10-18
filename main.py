@@ -5,7 +5,7 @@ import random
 import string
 import time
 
-from utils import TimedCompressionRotatingFileHandler
+from custom_utils import TimedCompressionRotatingFileHandler
 
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 
@@ -15,7 +15,7 @@ LOGGING_CONFIG = {
     "formatters": {
         "standard": {
             "format": "%(asctime)s - [%(levelname)s] - %(name)s - %(pathname)s.(%(funcName)s):%(lineno)d - %(message)s",  # noqa: E501
-            "class": "utils.UTCFormatter",
+            "class": "custom_utils.UTCFormatter",
         },
     },
     "handlers": {
@@ -28,7 +28,7 @@ LOGGING_CONFIG = {
         "default": {
             "level": "INFO",
             "formatter": "standard",
-            "class": "utils.TimedCompressionRotatingFileHandler",
+            "class": "custom_utils.TimedCompressionRotatingFileHandler",
             "filename": os.path.join(BASE_DIR, 'logs/atas', 'atas.log'),
             "when": "S",  # "when": "midnight",
             "interval": 30,
