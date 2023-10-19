@@ -48,13 +48,6 @@ LOGGING_CONFIG = {
     },
 }
 
-# defaultHandler = logging.handlers.TimedRotatingFileHandler(
-#     os.path.join(BASE_DIR, 'logs/atas', 'atas.log'),
-#     'midnight',
-#     backupCount=365
-# )
-# defaultHandler.rotator = rotator
-
 logging.config.dictConfig(LOGGING_CONFIG)
 logger = logging.getLogger(__name__)
 
