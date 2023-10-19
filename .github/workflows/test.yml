@@ -15,11 +15,12 @@ jobs:
       - name: Set up Python environment
         uses: actions/setup-python@v4
         with:
-          python-version: "3.11"
+          python-version: "3.11.0"
       - name: Install pytest
         run: |
           python -m pip install --upgrade pip
-          pip install pytest
+          pip install pipenv
+          pipenv install --dev
       - name: Run pytest
         run: |
-          pytest -c setup.cfg .
+          pipenv run pytest -c setup.cfg .
