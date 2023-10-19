@@ -55,5 +55,5 @@ class TimedCompressionRotatingFileHandler(logging.handlers.TimedRotatingFileHand
         days_delta = (last_day - current_date).days
         return r + (days_delta * (24 * 60 * 60))
 
-    rotator = custom_rotator
-    namer = custom_namer
+    rotator = custom_rotator  # type: ignore[assignment]
+    namer = custom_namer  # type: ignore[assignment]
