@@ -66,6 +66,8 @@ if __name__ == "__main__":
         filename=os.path.join(BASE_DIR, "logs/atas", "atas.log")
     )
     while True:
-        msg = "".join(random.choices(string.ascii_letters, k=random.randint(5, 15)))
+        msg = "".join(
+            random.choices(string.ascii_letters, k=random.randint(5, 15))  # nosec
+        )
         logger.info(msg)
         time.sleep(2)
