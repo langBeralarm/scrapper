@@ -4,10 +4,10 @@ on:
   pull_request:
     branches: [ "main", "dev" ]
   push:
-    branches: [ "*" ]
+    branches: [ "**" ]  # One asterisk only matches branches not containing a '/'
 
 jobs:
-  mypy:
+  pytest:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repo

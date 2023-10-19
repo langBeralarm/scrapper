@@ -4,7 +4,7 @@ on:
   pull_request:
     branches: [ "main", "dev" ]
   push:
-    branches: [ "*" ]
+    branches: [ "**" ]  # One asterisk only matches branches not containing a '/'
 
 jobs:
   mypy:
@@ -22,4 +22,4 @@ jobs:
           pip install mypy
       - name: Run mypy
         run: |
-          mypy --config-file=pyproject.toml
+          mypy --config-file=pyproject.toml .

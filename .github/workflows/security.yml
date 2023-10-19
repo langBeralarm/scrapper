@@ -4,7 +4,7 @@ on:
   pull_request:
     branches: [ "main", "dev" ]
   push:
-    branches: [ "*" ]
+    branches: [ "**" ]  # One asterisk only matches branches not containing a '/'
 
 jobs:
   bandit:
@@ -22,4 +22,4 @@ jobs:
           pip install bandit
       - name: Run mypy
         run: |
-          bandit -c pyproject.toml
+          bandit -c pyproject.toml .
