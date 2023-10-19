@@ -1,0 +1,18 @@
+[tool.bandit]
+exclude_dirs = ["tests", ".git", "__pycache__", "logs", ".pytest_cache"]
+
+[tool.black]
+line-length = 88
+target-version = ['py311']
+include = '\.pyi?$'
+
+[tool.isort]
+profile = "black"
+
+[tool.mypy]
+exlude = [
+    "__pycache__",
+    ".pytest_cache",
+    ".git",
+    "logs"
+]

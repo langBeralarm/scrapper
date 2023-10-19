@@ -6,6 +6,13 @@ name = "pypi"
 [packages]
 
 [dev-packages]
+flake8 = "*"
+pre-commit = "*"
+bandit = "*"
+black = "*"
+isort = "*"
+mypy = "*"
+pytest = "*"
 
 [requires]
 python_version = "3.11"
