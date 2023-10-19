@@ -1,19 +1,26 @@
-import custom_utils
 import logging.handlers
 import os
-
 from datetime import datetime
+from unittest import TestCase
+
 from freezegun import freeze_time
-from unittest import mock, TestCase
+
+import custom_utils
 
 
 class TestTimedCompressionRotatingFileHandler(TestCase):
     DAY = 24 * 60 * 60
-    FILE_NAME = os.path.join(os.path.dirname(os.path.realpath(__file__)), "logs", "test.log")
+    FILE_NAME = os.path.join(
+        os.path.dirname(os.path.realpath(__file__)), "logs", "test.log"
+    )
 
     def setUp(self):
-        self.custom_handler = custom_utils.TimedCompressionRotatingFileHandler(filename=self.FILE_NAME)
-        self.handler = logging.handlers.TimedRotatingFileHandler(filename=self.FILE_NAME)
+        self.custom_handler = custom_utils.TimedCompressionRotatingFileHandler(
+            filename=self.FILE_NAME
+        )
+        self.handler = logging.handlers.TimedRotatingFileHandler(
+            filename=self.FILE_NAME
+        )
 
     def tearDown(self):
         del self.custom_handler
@@ -45,6 +52,8 @@ class TestTimedCompressionRotatingFileHandler(TestCase):
         with freeze_time(time):
             test_date = datetime.now()
             test_ts = int(datetime.timestamp(test_date))
-            expected = (expected_days * self.DAY) + self.handler.computeRollover(test_ts)
+            expected = (expected_days * self.DAY) + self.handler.computeRollover(
+                test_ts
+            )
 
             self.assertEqual(expected, self.custom_handler.computeRollover(test_ts))

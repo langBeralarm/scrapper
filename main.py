@@ -29,7 +29,7 @@ LOGGING_CONFIG = {
             "level": "INFO",
             "formatter": "standard",
             "class": "custom_utils.TimedCompressionRotatingFileHandler",
-            "filename": os.path.join(BASE_DIR, 'logs/atas', 'atas.log'),
+            "filename": os.path.join(BASE_DIR, "logs/atas", "atas.log"),
             "when": "S",  # "when": "midnight",
             "interval": 30,
             "backupCount": 3,
@@ -62,13 +62,10 @@ def custom_add(x: int, y: int) -> int:
 if __name__ == "__main__":
     logger.info('This is a test!')
     res: int = custom_add(4, 5)  # pragma: no cover
-    t = TimedCompressionRotatingFileHandler(filename=os.path.join(BASE_DIR, 'logs/atas', 'atas.log'))
+    t = TimedCompressionRotatingFileHandler(
+        filename=os.path.join(BASE_DIR, "logs/atas", "atas.log")
+    )
     while True:
-        msg = ''.join(random.choices(string.ascii_letters, k=random.randint(5, 15)))
+        msg = "".join(random.choices(string.ascii_letters, k=random.randint(5, 15)))
         logger.info(msg)
-        current_time = int(time.time())
-        print(f'Rollover time: {((t.computeRollover(current_time) - current_time) / (24 * 60 * 60))}')
         time.sleep(2)
-
-
-

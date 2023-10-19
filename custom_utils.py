@@ -2,33 +2,34 @@ import gzip
 import logging.handlers
 import os
 import shutil
-
 from datetime import datetime, timedelta, timezone
 
 
 class UTCFormatter(logging.Formatter):
     """
-    A logging Formatter giving timestamps in the ISO 8601 format using the UTC time zone designator.
+    A logging Formatter giving timestamps in the ISO 8601 format using the UTC time
+    zone designator.
     """
 
     def formatTime(self, record: logging.LogRecord, datefmt: str | None = None) -> str:
         # Call the logging Formatter's formatTime method if a datefmt is given
         if datefmt is not None:
             return super().formatTime(record, datefmt)
-        # Return the creation time in the UTC timezone including the full time with the fractional seconds truncated
-        # to milliseconds
-        return datetime.fromtimestamp(record.created, tz=timezone.utc).isoformat(timespec='milliseconds')
+        # Return the creation time in the UTC timezone including the full time with the
+        # fractional seconds truncated to milliseconds
+        return datetime.fromtimestamp(record.created, tz=timezone.utc).isoformat(
+            timespec="milliseconds"
+        )
 
 
 class TimedCompressionRotatingFileHandler(logging.handlers.TimedRotatingFileHandler):
-
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.suffix = self.suffix + ".log"
 
     def custom_rotator(self, source, dest):
-        with open(source, 'rb') as file_in:
-            with gzip.open(dest, 'wb') as file_out:
+        with open(source, "rb") as file_in:
+            with gzip.open(dest, "wb") as file_out:
                 shutil.copyfileobj(file_in, file_out)
         os.remove(source)
 
