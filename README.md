@@ -9,3 +9,9 @@ To run the message broker, Docker must be running. Then execute the `start-rabbi
 ```bash
 bash start-rabbitmq.sh
 ```
+
+## Run the Celery Worker
+To start the celery worker the module with the application has to specified.
+```bash
+celery -A scrapper worker -l DEBUG
+```
