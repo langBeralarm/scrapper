@@ -1,6 +1,9 @@
 import logging.config
+import time
 
-from tasks import add
+from random_word import RandomWords  # type: ignore
+
+from tasks import alert, notify
 
 LOGGING_CONFIG = {
     "version": 1,
@@ -31,6 +34,15 @@ logger = logging.getLogger(__name__)
 
 
 if __name__ == "__main__":
-    add.delay(42, 69)
-    print("Test")
-    logger.info("Called add with 42 and 69")
+    r = RandomWords()
+    for i in range(10, 0, -1):
+        message: str = f"{r.get_random_word()} - {i}"
+        recipient: str = r.get_random_word()
+        countdown: int = i * 2
+        logger.info(
+            "Message: %s - Recipient: %s - Countdown: %d"
+            % (message, recipient, countdown)
+        )
+        # The comma in the args is necessary otherwise an error occurs
+        alert.apply_async((message,), link=notify.s(recipient), countdown=countdown)
+        time.sleep(1)

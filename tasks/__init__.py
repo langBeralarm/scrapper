@@ -1,2 +1,2 @@
 # flake8: noqa
-from .tasks import add
+from .tasks import alert, notify

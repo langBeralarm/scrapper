@@ -1,6 +1,12 @@
 from scrapper import app
 
 
-@app.task(name="tasks.tasks.add")
-def add(x: int, y: int) -> int:
-    return x + y
+@app.task
+def alert(message: str):
+    print(f"Alert: {message}")
+    return message.capitalize()
+
+
+@app.task
+def notify(message: str, recipient: str):
+    print(f"Notification {message} for: {recipient}")
