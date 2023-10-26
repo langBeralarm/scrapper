@@ -5,6 +5,7 @@ name = "pypi"
 
 [packages]
 celery = "*"
+random-word = "*"
 
 [dev-packages]
 flake8 = "*"
