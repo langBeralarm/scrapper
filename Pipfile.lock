@@ -1,7 +1,11 @@
 {
     "_meta": {
         "hash": {
+<<<<<<< HEAD
             "sha256": "db91959602ea86396ac16acd0b06202db7ea63da59c8d9ed9edc75c8a0e501dd"
+=======
+            "sha256": "3d9d4293ac146e6c78a863c0bd3d8d2661f5c0e6cb1a4abed1ed27c194d6c00c"
+>>>>>>> d218bde (build: Fix Pipfile.lock after rebase)
         },
         "pipfile-spec": 6,
         "requires": {
@@ -289,6 +293,14 @@
             "markers": "python_version >= '3.7'",
             "version": "==7.4.3"
         },
+        "python-dateutil": {
+            "hashes": [
+                "sha256:0123cacc1627ae19ddf3c27a5de5bd67ee4586fbdd6440d9748f8abb483d3e86",
+                "sha256:961d03dc3453ebbc59dbdea9e4e11c5651520a876d0f4db161e8674aae935da9"
+            ],
+            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2'",
+            "version": "==2.8.2"
+        },
         "pyyaml": {
             "hashes": [
                 "sha256:04ac92ad1925b2cff1db0cfebffb6ffc43457495c9b3c39d3fcae417d7125dc5",
@@ -360,6 +372,14 @@
             ],
             "markers": "python_version >= '3.8'",
             "version": "==68.2.2"
+        },
+        "six": {
+            "hashes": [
+                "sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926",
+                "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"
+            ],
+            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2'",
+            "version": "==1.16.0"
         },
         "smmap": {
             "hashes": [
