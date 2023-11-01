@@ -17,3 +17,22 @@ exlude = [
     "logs",
     "tests"
 ]
+
+[tool.pylint]
+ignore-paths = [
+    "__pycache__",
+    ".pytest_cache",
+    ".git",
+    "logs",
+    "tests"
+]
+max-line-length = 88
+jobs = 0
+load-plugins = [
+    "pylint.extensions.confusing_elif",
+    "pylint.extensions.for_any_all",
+    "pylint.extensions.bad_builtin",
+    "pylint.extensions.check_elif",
+    "pylint.extensions.redefined_variable_type",
+    "pylint.extensions.docparams"
+]
