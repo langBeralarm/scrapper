@@ -14,6 +14,7 @@ isort = "*"
 mypy = "*"
 pytest = "*"
 pylint = "*"
+vulture = "*"
 
 [requires]
 python_version = "3.11"
