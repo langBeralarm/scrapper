@@ -1,2 +1,5 @@
+from main import custom_add
+
+
 def test_initial():
-    assert 1 == 1
+    assert custom_add(2, 2) == 4

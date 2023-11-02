@@ -36,6 +36,9 @@ load-plugins = [
     "pylint.extensions.redefined_variable_type",
     "pylint.extensions.docparams"
 ]
+disable = """
+    missing-module-docstring
+"""
 
 [tool.vulture]
 min_confidence = 100

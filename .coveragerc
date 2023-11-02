@@ -1,0 +1,19 @@
+[run]
+branch = True
+omit =
+    # Don't cover github files
+    .github/*
+    # Don't cover logs
+    logs/*
+    # Don't cover tests
+    tests/*
+    */test_*.py
+    */*_test.py
+
+[report]
+# Skip empty files
+skip_empty = True
+# Show missing lines
+show_missing = True
+# Target coverage of 80%
+fail_under = 80
