@@ -17,6 +17,7 @@ exlude = [
     "logs",
     "tests"
 ]
+check_untyped_defs = true
 
 [tool.pylint]
 ignore-paths = [
