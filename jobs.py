@@ -23,6 +23,7 @@ def clean_log_files():
     previous_month: datetime = start_of_month - timedelta(days=1)
 
     # Get log files
+    # TODO: Check if logs folder should be in regex pylint: disable=fixme
     file_names: list[str] = glob.glob(BASE_DIR + "/**/*.log**", recursive=True)
     # Get zip files
     zip_files: list[str] = glob.glob(BASE_DIR + "/**/*.logs.zip**", recursive=True)
@@ -32,14 +33,14 @@ def clean_log_files():
         file_names, previous_month.strftime(dt_format)
     )
 
-    grouped_files: dict[str, list[str]] = _group_log_files(file_names)
+    grouped_files: dict[str, list[str]] = _group_log_files(files_to_zip)
 
     # Create the zip archive with the files of the previous month
-    for key in grouped_files:
+    for key, value in grouped_files.items():
         zipfile_name: str = f"{previous_month.strftime(dt_format)}.{key}.logs.zip"
         zipfile_location: str = os.path.join(BASE_DIR, "logs", key, zipfile_name)
 
-        _zip_files(files_to_zip, zipfile_location)
+        _zip_files(value, zipfile_location)
 
     # Get clean up datetime one year prior to the previous month
     clean_up_dt: datetime = previous_month.replace(year=previous_month.year - 1)
@@ -62,7 +63,7 @@ def _get_files_to_zip(files: list[str], previous_month: str) -> list[str]:
         if _skip_file(file):
             continue
 
-        if previous_month in str(file):
+        if previous_month in str(file) and str(file) not in files_to_zip:
             files_to_zip.append(str(file))
 
     return files_to_zip
@@ -95,18 +96,18 @@ def _zip_files(files: list[str], zipfile_location: str):
             os.remove(file)
 
 
-def _skip_file(file: str, check_zip=False) -> bool:
+def _skip_file(file: str, include_zip=False) -> bool:
     """
     Check if the file should be skipped.
 
     :param file: File path
-    :param check_zip: If True checks ZIP files
+    :param include_zip: If True checks ZIP files
     :return: True if file should be skipped, False otherwise
     """
-    if check_zip:
+    if include_zip:
         return file is None or not zipfile.is_zipfile(file)
 
-    return file is None or not os.path.isfile(file)
+    return file is None or not os.path.isfile(file) or zipfile.is_zipfile(file)
 
 
 def _remove_zip_files(zip_files: list[str], clean_up_dt: datetime, dt_format="%Y-%m"):
@@ -119,7 +120,7 @@ def _remove_zip_files(zip_files: list[str], clean_up_dt: datetime, dt_format="%Y
     """
     for file in zip_files:
         # Guard clause
-        if _skip_file(file, check_zip=True):
+        if _skip_file(file, include_zip=True):
             continue
 
         # Get creation datetime
@@ -150,6 +151,7 @@ def _group_log_files(files: list[str]) -> dict[str, list[str]]:
         if log_type not in grouped_files:
             grouped_files[log_type] = []
 
-        grouped_files[log_type].append(file)
+        if file not in grouped_files[log_type]:
+            grouped_files[log_type].append(file)
 
     return grouped_files
