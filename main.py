@@ -1,6 +1,8 @@
 import logging.config
 import os
 
+from jobs import clean_log_files
+
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 
 LOGGING_CONFIG = {
@@ -47,4 +49,4 @@ logger = logging.getLogger(__name__)
 
 
 if __name__ == "__main__":
-    logger.info("This is a test")
+    clean_log_files()
