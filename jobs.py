@@ -23,10 +23,11 @@ def clean_log_files():
     previous_month: datetime = start_of_month - timedelta(days=1)
 
     # Get log files
-    # TODO: Check if logs folder should be in regex pylint: disable=fixme
-    file_names: list[str] = glob.glob(BASE_DIR + "/**/*.log**", recursive=True)
+    file_names: list[str] = glob.glob(BASE_DIR + "/**/logs/**/*.log**", recursive=True)
     # Get zip files
-    zip_files: list[str] = glob.glob(BASE_DIR + "/**/*.logs.zip**", recursive=True)
+    zip_files: list[str] = glob.glob(
+        BASE_DIR + "/**/logs/**/*.logs.zip**", recursive=True
+    )
 
     # Get files of the previous month
     files_to_zip: list[str] = _get_files_to_zip(
