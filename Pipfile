@@ -4,6 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+celery = {extras = ["redis"], version = "*"}
 
 [dev-packages]
 flake8 = "*"
