@@ -1,5 +1,9 @@
 import logging.config
 import os
+from datetime import datetime
+from time import sleep
+
+from scrapper.celery import eval_task
 
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 
@@ -45,4 +49,8 @@ logger = logging.getLogger(__name__)
 
 
 if __name__ == "__main__":
-    logger.info("Test")
+    for counter in range(1, 101):
+        dt: datetime = datetime.now()
+        eval_task.apply_async((counter, dt), countdown=counter)
+        logger.info("Called Task with counter: {} at: {}".format(counter, dt))
+        sleep(int(counter / 2))
