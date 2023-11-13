@@ -1,7 +1,8 @@
 import logging
 from datetime import datetime, timezone
+from typing import Optional
 
-from celery import Celery
+from celery import Celery  # type: ignore
 
 logger = logging.getLogger(__name__)
 
@@ -28,12 +29,25 @@ app.conf.update(
 
 
 @app.task(bind=True)
-def eval_task(self, counter: int, call_dt: datetime):
-    discrepancy: float = (
-        datetime.now(timezone.utc)
-        - datetime.strptime(self.request.eta, "%Y-%m-%dT%H:%M:%S.%f%z")
-    ).total_seconds()
-    logger.info(
-        "Called on %s with counter: %s - eta: %s - discrepancy: %s"
-        % (call_dt, counter, self.request.eta, discrepancy)
-    )
+def eval_task(
+    self, counter: int, call_dt: datetime
+):  # pylint: disable=missing-function-docstring
+    if self.request.eta is not None:  # pragma: no cover
+        discrepancy: float = (
+            datetime.now(timezone.utc)
+            - datetime.strptime(self.request.eta, "%Y-%m-%dT%H:%M:%S.%f%z")
+        ).total_seconds()
+        logger.info(
+            "Called on %s with counter: %s - eta: %s - discrepancy: %s",
+            call_dt,
+            counter,
+            self.request.eta,
+            discrepancy,
+        )
+    save_exec_times(call_dt, self.request.eta)
+
+
+def save_exec_times(
+    expected_exec: datetime, actual_exec: Optional[datetime] = None
+):  # pylint: disable=unused-argument, missing-function-docstring
+    pass
