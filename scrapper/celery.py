@@ -65,4 +65,5 @@ def eval_task(
 def save_exec_times(
     expected_exec: datetime, actual_exec: Optional[datetime] = None
 ):  # pylint: disable=unused-argument, missing-function-docstring
-    pass
+    del expected_exec
+    del actual_exec

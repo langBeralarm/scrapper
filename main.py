@@ -52,5 +52,9 @@ if __name__ == "__main__":
     for counter in range(1, 101):
         dt: datetime = datetime.now()
         eval_task.apply_async((counter, dt), countdown=counter)
-        logger.info("Called Task with counter: {} at: {}".format(counter, dt))
+        logger.info(
+            "Called Task with counter: %d at: %s",
+            counter,
+            dt.strftime("%Y-%m-%d %H:%M:%S,%f"),
+        )
         sleep(int(counter / 2))
