@@ -1,10 +1,10 @@
-import logging
 from datetime import datetime, timezone
 from typing import Optional
 
 from celery import Celery  # type: ignore
+from celery.utils.log import get_task_logger  # type: ignore
 
-logger = logging.getLogger(__name__)
+logger = get_task_logger(__name__)
 
 app = Celery(
     "scrapper", broker="amqp://guest:guest@rabbit:5672/1", include=["scrapper"]
@@ -12,7 +12,7 @@ app = Celery(
 
 # Celery configuration
 app.conf.update(
-    task_time_limit=24 * 60 * 60,  # For long-running tasks of up to 24 hours
+    task_time_limit=(24 * 60 * 60) + 1,  # For long-running tasks of up to 24 hours
     worker_hijack_root_logger=False,  # Celery shouldn't overwrite the root logger
     # Sensible defaults for task annotations
     task_annotations={
@@ -20,11 +20,26 @@ app.conf.update(
             "ignore_result": True,  # Requires explicitly enabling results
         }
     },
-    # For testing
-    task_acks_late=True,
-    task_acks_on_failure_or_timeout=False,
-    worker_deduplicate_successful_tasks=True,
+    worker_log_format="%(asctime)s - [%(levelname)s] - %(name)s/%(processName)s - %(message)s",  # noqa: E501 pylint: disable=line-too-long
+    # Need to call get_task_logger to apply the following format
+    worker_task_log_format="%(asctime)s - [%(levelname)s] - %(name)s - %(pathname)s.(%(funcName)s):%(lineno)d - %(message)s",  # noqa: E501 pylint: disable=line-too-long
+    worker_task_stoudts_level="INFO",
+    # For testing with task_acks_late
+    # task_acks_late=True,
+    # task_acks_on_failure_or_timeout=False,
+    # worker_deduplicate_successful_tasks=True,
     result_backend="redis://redis:6379/0",
+    # result_backend_transport_options={},
+    # For testing other configs
+    # result_backend_thread_safe=True,
+    # broker_heartbeat, Found no good answers on the internet
+    # broker_pool_limit= Leave default since we aren't using eventlet/gevent
+    # worker_cancel_long_running_tasks_on_connection_loss,
+    # RabbitMQ specific
+    # broker_login_method,  Default seems okay
+    broker_connection_retry_on_startup=True,
+    # Explicitly set allowed content types
+    accept_content=("json",),
 )
 
 
