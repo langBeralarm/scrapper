@@ -5,6 +5,9 @@ RUN yes | pip install --upgrade pip \
 
 COPY . ./app
 
+# Add non-root user
+RUN adduser developer;echo 'developer:pass' | chpasswd
+
 WORKDIR /app
 
 RUN pipenv install --deploy --system

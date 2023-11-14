@@ -31,4 +31,5 @@ services:
     <<: *application
     depends_on:
       - rabbit-mq
+    user: developer
     command: ["celery", "-A", "scrapper", "worker", "-l", "INFO"]
