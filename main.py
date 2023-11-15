@@ -49,12 +49,16 @@ logger = logging.getLogger(__name__)
 
 
 if __name__ == "__main__":
-    for counter in range(1, 101):
+    HALF_HOUR: int = 30 * 60
+    for counter in range(1, 48 + 1):
         dt: datetime = datetime.now()
-        eval_task.apply_async((counter, dt), countdown=counter)
+        eval_task.apply_async((counter, dt), countdown=counter * HALF_HOUR)
         logger.info(
-            "Called Task with counter: %d at: %s",
+            "Called Task with counter: %d - countdown: %d at: %s",
             counter,
+            counter * HALF_HOUR,
             dt.strftime("%Y-%m-%d %H:%M:%S,%f"),
         )
-        sleep(int(counter / 2))
+        next_call: int = int(counter)
+        logger.info("Next call in %d seconds", next_call)
+        sleep(next_call)
