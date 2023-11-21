@@ -10,12 +10,14 @@ services:
       - RABBITMQ_CONFIG_FILE=/etc/rabbitmq/rabbitmq
     volumes:
       - ./rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+    restart: on-failure
 
   redis:
     image: redis:alpine
     hostname: "redis"
     ports:
       - "6379:6379"
+    restart: on-failure
 
   application:
     &application
@@ -24,8 +26,10 @@ services:
     command: ["python", "main.py"]
     depends_on:
       - rabbit-mq
+      - redis
     volumes:
       - .:/app
+    restart: on-failure
 
   celery_worker:
     <<: *application
@@ -33,3 +37,4 @@ services:
       - rabbit-mq
     user: developer
     command: ["celery", "-A", "scrapper", "worker", "-l", "INFO"]
+    restart: on-failure
