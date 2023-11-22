@@ -11,3 +11,14 @@ To prevent the job from failing if the coverage decreased the Repo Setting for t
 - `Coverage Threshold for Failure` and
 - `Coverage Decrease Threshold for Failure`
 need to be set accordingly.
+
+## Usage
+To start the application with RabbitMQ as the broker:
+```bash
+docker-compose up -d
+```
+
+To start the application with Redis as the broker:
+```bash
+docker-compose -f docker-compose.redis.yaml up -d
+```

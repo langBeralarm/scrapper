@@ -1,17 +1,5 @@
 version: "3.8"
 services:
-  rabbit-mq:
-    image: rabbitmq:alpine
-    hostname: "rabbit"
-    ports:
-      - "5672:5672"
-    environment:
-      - RABBITMQ_DEFAULT_VHOST=1
-      - RABBITMQ_CONFIG_FILE=/etc/rabbitmq/rabbitmq
-    volumes:
-      - ./rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
-    restart: on-failure
-
   redis:
     image: redis:alpine
     hostname: "redis"
@@ -24,10 +12,9 @@ services:
     build:
       context: .
     environment:
-      - REDIS=False
+      - REDIS=True
     command: ["python", "main.py"]
     depends_on:
-      - rabbit-mq
       - redis
     volumes:
       - .:/app
@@ -36,7 +23,7 @@ services:
   celery_worker:
     <<: *application
     depends_on:
-      - rabbit-mq
+      - redis
     user: developer
     command: ["celery", "-A", "scrapper", "worker", "-l", "INFO"]
     restart: on-failure
