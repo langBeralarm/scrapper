@@ -4,6 +4,8 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+paho-mqtt = "*"
+types-paho-mqtt = "*"
 
 [dev-packages]
 flake8 = "*"
