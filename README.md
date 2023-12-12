@@ -11,3 +11,6 @@ To prevent the job from failing if the coverage decreased the Repo Setting for t
 - `Coverage Threshold for Failure` and
 - `Coverage Decrease Threshold for Failure`
 need to be set accordingly.
+
+## Paho MQTT
+The user and password currently have to be created through the Dashboard.
