@@ -1,0 +1,40 @@
+version: "3.8"
+services:
+  emqx:
+    image: emqx/emqx:5.3
+    hostname: node1.emqx.io
+    environment:
+    - "EMQX_NAME=emqx"
+    - "EMQX_HOST=node1.emqx.io"
+    - "EMQX_CLUSTER__DISCOVERY_STRATEGY=static"
+    - "EMQX_CLUSTER__STATIC__SEEDS=[emqx@node1.emqx.io]"
+    - "EMQX_AUTH__USER__1__USERNAME=tester"
+    - "EMQX_AUTH__USER__1__PASSWORD=password12"
+    - "EMQX_LOG__CONSOLE_HANDLER__LEVEL=debug"
+    ports:
+      - "18083:18083"
+      - "1883:1883"
+      - "8083:8083"
+      - "8084:8084"
+    volumes:
+      - ./emqx/loaded_plugins:/opt/emqx/data/loaded_plugins
+    restart: unless-stopped
+    networks:
+      custom_network:
+        aliases:
+        - node1.emqx.io
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+    networks:
+      - custom_network
+    depends_on:
+      - emqx
+
+networks:
+  custom_network:
+    driver: bridge
