@@ -1,5 +1,5 @@
 <p align="center">
-    <a href="https://coveralls.io/github/langBeralarm/scrapper?branch=main"><img src="https://coveralls.io/repos/github/langBeralarm/scrapper/badge.svg?branch=main" alt="Coverage Status"></a>
+    <a href='https://coveralls.io/github/langBeralarm/scrapper?branch=feature/implement-paho-mqtt'><img src='https://coveralls.io/repos/github/langBeralarm/scrapper/badge.svg?branch=feature/implement-paho-mqtt' alt='Coverage Status' /></a>
     <a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
 </p>
 
