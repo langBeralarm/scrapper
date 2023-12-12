@@ -9,6 +9,8 @@ omit =
     tests/*
     */test_*.py
     */*_test.py
+    # Don't cover the main script
+    main.py
 
 [report]
 # Skip empty files
