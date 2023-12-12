@@ -218,3 +218,34 @@ class MqttClientPublishTestCase(TestCase):
         )
         self.mqtt_client.client.disconnect.assert_called_once()
         self.mqtt_client.client.loop_stop.assert_called_once()
+
+    @patch("mqtt.mqtt_client.logger")
+    @patch("time.sleep")
+    @patch("mqtt.mqtt_client.mqtt.Client.loop_start")
+    @patch("mqtt.mqtt_client.mqtt.Client.connect")
+    @patch("mqtt.mqtt_client.mqtt.Client.loop_stop")
+    def test_retry_connection(
+        self,
+        loop_stop: MagicMock,
+        connect: MagicMock,
+        loop_start: MagicMock,
+        sleep: MagicMock,
+        logger: MagicMock,
+    ):
+        # Arrange
+        expected_calls = [
+            call(
+                "The MQTT client could not connect to the MQTT broker, returned with RC %s",  # noqa: E501
+                "",
+            ),
+        ]
+        # Act
+        self.mqtt_client._retry_connection("")
+        # Assert
+        self.assertEqual(self.mqtt_client.client.loop_stop.call_count, 3)
+        self.assertEqual(self.mqtt_client.client.connect.call_count, 3)
+        self.assertEqual(self.mqtt_client.client.loop_start.call_count, 3)
+        self.assertEqual(sleep.call_count, 3)
+        self.assertFalse(self.mqtt_client.connected)
+        self.assertEqual(self.mqtt_client.retries, 0)
+        self.assertEqual(logger.warning.call_args_list, expected_calls)
