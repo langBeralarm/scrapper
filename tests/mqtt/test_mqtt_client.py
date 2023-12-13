@@ -157,7 +157,7 @@ class MqttClientPublishTestCase(TestCase):
         self.mqtt_client.on_connect(self.mqtt_client.client, {}, {}, 0)
         # Assert
         self.assertTrue(self.mqtt_client.connected)
-        self.assertEqual(self.mqtt_client.retries, 3)
+        self.assertEqual(self.mqtt_client.tries, 0)
         self.mqtt_client.client.subscribe.assert_called_once_with(
             self.mqtt_client.topics
         )
@@ -247,5 +247,5 @@ class MqttClientPublishTestCase(TestCase):
         self.assertEqual(self.mqtt_client.client.loop_start.call_count, 3)
         self.assertEqual(sleep.call_count, 3)
         self.assertFalse(self.mqtt_client.connected)
-        self.assertEqual(self.mqtt_client.retries, 0)
+        self.assertEqual(self.mqtt_client.tries, 3)
         self.assertEqual(logger.warning.call_args_list, expected_calls)
