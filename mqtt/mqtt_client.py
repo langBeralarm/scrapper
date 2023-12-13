@@ -1,6 +1,7 @@
 # pylint: disable=fixme
 import json
 import logging
+import random
 import subprocess  # nosec
 import time
 from typing import Optional
@@ -192,3 +193,8 @@ class MqttClient:  # pylint: disable=too-many-instance-attributes
         self.client.disconnect()
         self.client.loop_stop()
         logger.info("Disconnecting from MQTT Broker ...")
+
+    @staticmethod
+    def _get_exponential_backoff(tries: int) -> float:
+        """Calculate an exponential backoff with jitter."""
+        return 2**tries + (random.randint(0, 1000) / 1000)  # nosec B311
