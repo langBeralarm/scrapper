@@ -28,7 +28,7 @@ class MqttClient:  # pylint: disable=too-many-instance-attributes
         self.default_qos: int = 2  # Is equal to exactly once
         self.topics: list[tuple[str, int]] = topics
         self.connected: bool = False
-        self.retries: int = 3
+        self.tries: int = 0
 
     def init(self):
         """Initialize the MqttClient.
@@ -85,7 +85,7 @@ class MqttClient:  # pylint: disable=too-many-instance-attributes
                 "test/status",
                 {"type": "status", "data": {"offline": False, "willful": True}},
             )
-            self.retries = 3
+            self.tries = 0
             return
 
         self._retry_connection(rc)
@@ -95,7 +95,7 @@ class MqttClient:  # pylint: disable=too-many-instance-attributes
         if self.client is None:
             logger.error("The Client is not defined")
             return
-        while self.retries > 0 and not self.connected:
+        while self.tries < 3 and not self.connected:
             self.client.loop_stop()
             try:
                 self.client.connect(self.host, self.port, self.keep_alive)
@@ -103,9 +103,9 @@ class MqttClient:  # pylint: disable=too-many-instance-attributes
             except ConnectionRefusedError:
                 pass
             finally:
-                self.retries -= 1
                 # TODO: Implement exponential backoff while trying to reconnect
-                time.sleep(3)
+                time.sleep(self._get_exponential_backoff(self.tries))
+                self.tries += 1
         logger.warning(
             "The MQTT client could not connect to the MQTT broker, returned with RC %s",
             str(rc),
@@ -134,6 +134,7 @@ class MqttClient:  # pylint: disable=too-many-instance-attributes
             )
         except TypeError:
             logger.error("Payload has invalid keys")
+        # TODO: Check if this should be done because message retry occurs automatically
         except ValueError:
             logger.warning("Outgoing queue is full - retrying to publish message")
             self._publish(topic, payload, qos, retain, _tries - 1)
