@@ -16,7 +16,7 @@ pytest = "*"
 pylint = "*"
 vulture = "*"
 pytest-cov = "*"
+pdoc = "*"
 
 [requires]
 python_version = "3.11"
-python_full_version = "3.11.0"

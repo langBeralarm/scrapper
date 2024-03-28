@@ -1,0 +1,49 @@
+name: documentation
+
+on:
+  push:
+    branches: [ "main", "feature/implement-paho-mqtt" ]
+
+# Restrict the permission
+permissions:
+  contents: read
+
+jobs:
+  generate-doc:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install pipenv
+        run: |
+          python -m pip install --upgrade pip
+          pip install pipenv
+      - name: Install dev packages
+        run: |
+          pipenv sync --categories=dev-packages
+      - name: Generate documentation
+        run: |
+          pipenv run pdoc -o docs/ main.py mqtt
+      - name: Upload documentation as a GitHub Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs/
+
+  deploy-doc:
+    needs: generate-doc
+    runs-on: ubuntu-latest
+    # Set required permissions
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy documentation to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
